@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362309733205",
+    "project_id": "awalnya-gabut",
+    "storage_bucket": "awalnya-gabut.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362309733205:android:b38369bf1b7a6cf6163ddc",
+        "android_client_info": {
+          "package_name": "com.example.ecoww"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362309733205-8r1cdt55locj6e871r6ckh1m5rgahnf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeLg6W29ypKlZtrDptJ-kevDbVQqW27ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362309733205-8r1cdt55locj6e871r6ckh1m5rgahnf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
