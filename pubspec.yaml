@@ -40,6 +40,8 @@ dependencies:
   onboarding: ^4.0.2
   http: ^1.2.1
   carousel_slider: ^4.2.1
+  flutter_dotenv: ^5.0.2
+  cloud_firestore: ^4.17.5
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +57,7 @@ dev_dependencies:
   firebase_auth: ^4.17.8
   bloc: ^8.1.4
   flutter_bloc: ^8.1.5
-  meta: 1.11.0
+  meta: ^1.12.0
   
 
 # For information on the generic Dart part of this file, see the
