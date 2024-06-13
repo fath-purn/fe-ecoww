@@ -34,6 +34,8 @@
 //   }
 // }
 
+import 'package:ecoww/ui/menu/home_screen.dart';
+import 'package:ecoww/ui/navbar/navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +67,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: NAV_KEY,
         onGenerateRoute: generateRoute,
-        home: SplashScreen(),
+        // home: HomeScreen(),
+        home: BottomNavigationBarExample(),
+        // home: SplashScreen(),
       ),
     );
   }

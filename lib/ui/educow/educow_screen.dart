@@ -50,7 +50,7 @@ class EducowScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Image.asset('assets/picture.png'),
+                    child: Image.asset('assets/rendang.jpg'),
                   ),
                 ),
                 Padding(
@@ -73,7 +73,7 @@ class EducowScreen extends StatelessWidget {
                               maxWidth: 200,
                             ),
                             child: Text(
-                              'Susu sapi perah merupakan sumber nutrisi yang kaya akan protein, kalsium, dan vitamin.....',
+                              'Susu sapi perah merupak.....',
                               style: TextStyle(
                                 fontSize: 12,
                               ),

@@ -3,11 +3,13 @@
 import 'package:ecoww/ui/educow/educow_screen.dart';
 import 'package:ecoww/ui/menu/profile.dart';
 import 'package:ecoww/ui/product/product_all.dart';
+import 'package:ecoww/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecoww/ui/product/detail_product.dart';
 import 'package:ecoww/ui/product/rekomendasi.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -201,14 +203,6 @@ class _HomeScreen extends State<HomeScreen> {
                           label: 'EduCow',
                           profile: false,
                         ),
-                        buildMenuOption(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/menu');
-                          },
-                          iconPath: 'assets/menu-heacow.png',
-                          label: 'HeaCow',
-                          profile: false,
-                        ),
                       ],
                     ),
                     SizedBox(height: 30.0),
@@ -231,12 +225,11 @@ class _HomeScreen extends State<HomeScreen> {
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 10.0),
                     SlideCardDemo(),
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              // SizedBox(height: 30),
             ],
           ),
         ),
@@ -295,15 +288,24 @@ class _HomeScreen extends State<HomeScreen> {
   }
 
   Widget buildRekomendasiMenu() {
-    return Container(
+    return SizedBox(
       height: 160.0,
       child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('product')
-            .orderBy('timestamp')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('produk').snapshots(),
         builder: (context, snapshot) {
-          print(snapshot);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          }
+
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
@@ -311,9 +313,10 @@ class _HomeScreen extends State<HomeScreen> {
           List<DocumentSnapshot> documents = snapshot.data!.docs;
 
           return ListView.builder(
+            clipBehavior: Clip.none,
             controller: _scrollController,
             scrollDirection: Axis.horizontal,
-            itemCount: documents.length + 1, // Tambah 1 untuk card terakhir
+            itemCount: documents.length + 1, // Add 1 for the last card
             itemBuilder: (context, index) {
               if (index == documents.length) {
                 return GestureDetector(
@@ -330,7 +333,7 @@ class _HomeScreen extends State<HomeScreen> {
                     margin: EdgeInsets.only(right: 16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.arrow_forward),
                         SizedBox(height: 8.0),
                         Text(
@@ -352,8 +355,8 @@ class _HomeScreen extends State<HomeScreen> {
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
                     borderRadius:
-                        BorderRadius.circular(8.0), // Mengatur radius Container
-                    color: Colors.white,
+                        BorderRadius.circular(8.0), // Container radius
+                    color: Color(0xff497748).withOpacity(0.41),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -363,18 +366,8 @@ class _HomeScreen extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shadowColor: Colors
-                          .transparent, // Hilangkan bayangan default tombol
-                      padding:
-                          EdgeInsets.zero, // Hilangkan padding default tombol
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(8.0), // Radius pada tombol
-                      ),
-                    ),
-                    onPressed: () {
+                  child: GestureDetector(
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -382,40 +375,42 @@ class _HomeScreen extends State<HomeScreen> {
                         ),
                       );
                     },
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      width: 150.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                8.0), // Radius pada gambar
-                            child: Image.network(
-                              data['gambar'],
-                              width: 150.0,
-                              height: 100.0,
-                              fit: BoxFit.cover,
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(10.0), // Image radius
+                          child: Image.network(
+                            data['gambar'],
+                            width: 150.0,
+                            height: 100.0,
+                            fit: BoxFit.cover,
                           ),
-                          SizedBox(height: 8.0),
-                          Text(
+                        ),
+                        SizedBox(height: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
                             data['nama'],
                             style: TextStyle(
                               fontSize: 14.0,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          SizedBox(height: 4.0),
-                          Text(
-                            data['harga'],
+                        ),
+                        SizedBox(height: 4.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            formatCurrency(data['harga'].toDouble()),
                             style: TextStyle(
                               fontSize: 12.0,
-                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -429,79 +424,95 @@ class _HomeScreen extends State<HomeScreen> {
 }
 
 class SlideCardDemo extends StatelessWidget {
-  final List<String> imagePaths = [
-    'assets/menu-product.png',
-    'assets/menu-heacow.png',
-    'assets/menu-educow.png',
-  ];
-
-  final List<String> titles = [
-    'Product',
-    'HeaCow',
-    'EduCow',
-  ];
+  const SlideCardDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200.0,
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: 200.0,
-          enlargeCenterPage: true,
-          enableInfiniteScroll: false,
-          autoPlay: true,
-        ),
-        items: imagePaths.asMap().entries.map((entry) {
-          int index = entry.key;
-          String imagePath = entry.value;
-          return Builder(
-            builder: (BuildContext context) {
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                        height: double.infinity, // Ensure image covers the card
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        color: Colors.black.withOpacity(0.5),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 5.0),
-                        child: SizedBox(
-                          width: double
-                              .infinity, // Ensure the text takes full width
-                          child: Text(
-                            titles[index],
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.left,
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('pengetahuan').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'Error: ${snapshot.error}',
+              style: TextStyle(color: Colors.red),
+            ),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        List<DocumentSnapshot> documents = snapshot.data!.docs;
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: documents.length,
+          clipBehavior: Clip.none,
+          itemBuilder: (BuildContext context, int index) {
+            Map<String, dynamic> data =
+                documents[index].data() as Map<String, dynamic>;
+            List<String> images = List<String>.from(data['image']);
+            List<String> titles = List<String>.from(data['title']);
+            return SizedBox(
+              height: 200, // Adjust the height as needed
+              child: CarouselSlider.builder(
+                itemCount: images.length,
+                itemBuilder:
+                    (BuildContext context, int imageIndex, int pageViewIndex) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            images[imageIndex],
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.5,
+                            ),
+                            child: Text(
+                              titles[imageIndex],
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                shadows: const <Shadow>[
+                                  Shadow(
+                                    offset: Offset(1.0, 1.0),
+                                    blurRadius: 3.0,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  );
+                },
+                options: CarouselOptions(
+                  autoPlay: true,
+                  viewportFraction: 0.9,
+                  aspectRatio: 2.0,
+                  enableInfiniteScroll: false,
                 ),
-              );
-            },
-          );
-        }).toList(),
-      ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

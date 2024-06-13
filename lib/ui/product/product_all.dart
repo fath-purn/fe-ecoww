@@ -106,12 +106,6 @@ class _ProductAllScreenState extends State<ProductAllScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios),
-        ),
         title: const Text(
           'Product',
           style: TextStyle(
@@ -137,17 +131,17 @@ class _ProductAllScreenState extends State<ProductAllScreen> {
                       children: [
                         buildMenuOption(
                           onTap: () {
-                            Navigator.pushNamed(context, '/ProductAllScreen');
+                            // Navigator.pushNamed(context, '/ProductAllScreen');
                           },
                           iconPath: 'assets/product-makanan.png',
-                          label: 'Product',
+                          label: 'Makanan',
                         ),
                         buildMenuOption(
                           onTap: () {
                             Navigator.pushNamed(context, '/menu');
                           },
                           iconPath: 'assets/product-minuman.png',
-                          label: 'EduCow',
+                          label: 'Minuman',
                         ),
                       ],
                     ),
@@ -185,16 +179,16 @@ class _ProductAllScreenState extends State<ProductAllScreen> {
                             ),
                           ),
                           SizedBox(height: 10.0),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: buildReviewPelanggan(index: 0),
-                              ),
-                              Expanded(
-                                child: buildReviewPelanggan(index: 1),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     Expanded(
+                          //       child: buildReviewPelanggan(index: 0),
+                          //     ),
+                          //     Expanded(
+                          //       child: buildReviewPelanggan(index: 1),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(height: 10.0),
                           Center(
                             child: ElevatedButton(
@@ -275,6 +269,7 @@ class _ProductAllScreenState extends State<ProductAllScreen> {
     return Container(
       height: 160.0,
       child: ListView.builder(
+        clipBehavior: Clip.none,
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         itemCount: rekomendasiMenu.length + 1, // Tambah 1 untuk card terakhir
@@ -439,13 +434,13 @@ class _ProductAllScreenState extends State<ProductAllScreen> {
 class SlideCardDemo extends StatelessWidget {
   final List<String> imagePaths = [
     'assets/menu-product.png',
-    'assets/menu-heacow.png',
+    // 'assets/menu-heacow.png',
     'assets/menu-educow.png',
   ];
 
   final List<String> titles = [
     'Product',
-    'HeaCow',
+    // 'HeaCow',
     'EduCow',
   ];
 

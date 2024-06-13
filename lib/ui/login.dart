@@ -1,4 +1,5 @@
 // import 'package:ecoww/bloc/register/register_cubit.dart';
+import 'package:ecoww/ui/navbar/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return await FirebaseAuth.instance.signInWithCredential(credential).then(
           (value) async => await Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => BottomNavigationBarExample()),
             (route) => false,
           ),
         );
@@ -93,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 content: Text(state.msg),
                 backgroundColor: Colors.green,
               ));
-            Navigator.pushNamedAndRemoveUntil(context, rHome, (route) => false);
+            Navigator.pushNamedAndRemoveUntil(context, rBar, (route) => false);
           }
         },
         child: Container(

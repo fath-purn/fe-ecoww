@@ -1,6 +1,7 @@
 import 'package:ecoww/ui/educow/educow_detail_screen.dart';
 import 'package:ecoww/ui/educow/educow_screen.dart';
 import 'package:ecoww/ui/menu/profile.dart';
+import 'package:ecoww/ui/navbar/navbar.dart';
 import 'package:ecoww/ui/product/product_all.dart';
 import 'package:ecoww/ui/product/rekomendasi.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ Route? generateRoute(RouteSettings settings) {
       _route = _pageRoute(body: EducowDetailScreen(), settings: settings);
     case rProfileScreen:
       _route = _pageRoute(body: ProfileScreen(), settings: settings);
+    case rBar:
+      _route = _pageRoute(body: BottomNavigationBarExample(), settings: settings);
       break;
   }
   return _route;
@@ -47,3 +50,4 @@ const String rRekomendasiScreen = '/RekomendasiScreen';
 const String rEducowScreen = '/EducowScreen';
 const String rEducowDetailScreen = '/EducowDetailScreen';
 const String rProfileScreen = '/ProfileScreen';
+const String rBar = '/Bar';
